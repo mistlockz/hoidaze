@@ -1,9 +1,10 @@
 <template>
   <div class="index">
     <div class="index__bg">
-    <div class="index__card">
-      <h1>Holidaze</h1>
-    </div>
+      <div class="index__card">
+        <img src="@/assets/logo.svg">
+        <h1>Holidaze</h1>
+      </div>
     </div>
   <div class="contact">
     <button>Contact us</button>
@@ -32,7 +33,8 @@ export default {
   background-size: cover;
   background-attachment: fixed;
   background-position: center;  
-  height:110vh;
+  height:100vh;
+  overflow-y: scroll;
   width:100%;
 }
 .index__bg{
@@ -40,11 +42,13 @@ export default {
 }
 .contact{
   height:10vh;
-  background-color: $orange;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  @extend .tab  
+  background-color: $orange;  
+  @extend .tab;
+  @extend .flex__between--center;
+  
+}
+p{
+  align-self: flex-end;
 }
 
 </style>

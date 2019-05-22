@@ -39,3 +39,124 @@ main{
 table{
     background-color: $grey;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;  
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;  
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: $ui-blue; 
+    border-radius: 5px;  
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: $blue;
+    cursor: pointer;
+  }
+.flex{
+    display: flex;
+    &__center{
+        @extend .flex;
+        justify-content: center;
+        &--top{
+            @extend .flex__center;
+            align-items: flex-start;
+        }
+        &--bottom{
+            @extend .flex__center;
+            align-items: flex-end;
+        }
+        &--center{
+            @extend .flex__center;
+            align-items: center;
+        }
+    }
+    &__left{
+        @extend .flex;
+        justify-content: flex-start;
+        &--top{
+            @extend .flex__left;
+            align-items: flex-start;
+        }
+        &--bottom{
+            @extend .flex__left;
+            align-items: flex-end;
+        }
+        &--center{
+            @extend .flex__left;
+            align-items: center;
+        }
+    }
+    &__right{
+        @extend .flex;
+        justify-content: flex-end;
+        &--top{
+            @extend .flex__right;
+            align-items: flex-start;
+        }
+        &--bottom{
+            @extend .flex__right;
+            align-items: flex-end;
+        }
+        &--center{
+            @extend .flex__right;
+            align-items: center;
+        }
+    }
+    &__between{
+        @extend .flex;
+        justify-content: space-between;
+        &--top{
+            @extend .flex__between;
+            align-items: flex-start;
+        }
+        &--bottom{
+            @extend .flex__between;
+            align-items: flex-end;
+        }
+        &--center{
+            @extend .flex__between;
+            align-items: center;
+        }
+    }
+    &__around{
+        @extend .flex;
+        justify-content: space-around;
+        &--top{
+            @extend .flex__around;
+            align-items: flex-start;
+        }
+        &--bottom{
+            @extend .flex__around;
+            align-items: flex-end;
+        }
+        &--center{
+            @extend .flex__around;
+            align-items: center;
+        }
+    }
+    &__even{
+        @extend .flex;
+        justify-content: space-evenly;
+        &--top{
+            @extend .flex__even;
+            align-items: flex-start;
+        }
+        &--bottom{
+            @extend .flex__even;
+            align-items: flex-end;
+        }
+        &--center{
+            @extend .flex__even;
+            align-items: center;
+        }
+    }
+}

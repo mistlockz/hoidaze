@@ -36,7 +36,7 @@
 };
 #app {
   font-family: holiRegular;
-  text-align: center;
+  //text-align: center;
   color: $black;
 }
 #nav {
@@ -50,25 +50,5 @@
     }
   }
 }
-/* width */
-::-webkit-scrollbar {
-  width: 0px;
-}
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: none;
-  width:10px; 
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: $ui-blue; 
-  width:10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: $blue; 
-}
 </style>
