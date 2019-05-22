@@ -1,0 +1,41 @@
+.tab{
+    border-radius: 5px 5px 0px 0px;
+}
+
+button{
+    border-radius: 5px;
+    font-family: holiExtraBold;
+    padding:10px;
+    color:white;
+    border:none;
+    background-color: $ui-blue;
+    &:hover{
+        background-color: $ui-yellow;
+        cursor: pointer;
+    }
+}
+a{
+    text-underline-position: under;
+    &:hover{
+        color: $ui-yellow;
+    }
+}
+footer{
+    background-color: $orange;
+}
+form{
+    background-color: $orange;
+    color: $white;
+}
+header{
+    background-color: $red;
+}
+nav{
+    background-color: $orange;
+}
+main{
+    background-color: $grey-light;   
+}
+table{
+    background-color: $grey;
+}
