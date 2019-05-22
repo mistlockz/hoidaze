@@ -36,7 +36,7 @@
 };
 #app {
   font-family: holiRegular;
-  //text-align: center;
+  text-align: center;
   color: $black;
 }
 #nav {

@@ -2,9 +2,23 @@
   <div class="index">
     <div class="index__bg">
       <div class="index__card">
-        <img src="@/assets/logo.svg">
-        <h1>Holidaze</h1>
+        <div class="flex__center--center">
+          <img src="@/assets/logoedit.svg" class="logo">
+          <h1>Holidaze</h1>
+        </div>
+        
+        <h2>The easy way of finding accomodation in Bergen</h2>
+        <div class="linkButton">
+          <a href="" class="ming">
+           <img src="@/assets/icons/search.svg" class="icon-s"> 
+           Search
+            
+          </a>
+        </div>
+        
+        
       </div>
+      
     </div>
   <div class="contact">
     <button>Contact us</button>
@@ -42,13 +56,41 @@ export default {
 }
 .contact{
   height:10vh;
-  background-color: $orange;  
+  background-color: $nu-orange;  
   @extend .tab;
   @extend .flex__between--center;
   
 }
-p{
+.contact p{
   align-self: flex-end;
 }
+.index__card{  
+  width:80%;
+  margin: 0 auto;
+  margin-top: 5vh;
+  background-color:$nu-red;
+  color:$white;  
+  border-radius: 8px;
+}
+.ming{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid white 2px;
+}
+a{
+  
+ 
+}
+.anchor{
+  border:solid white 1px;
+  width:90%;
+  margin: 0 auto;
+  border-radius: 6px;
+  padding:10px;
 
+  &:hover :first-child{
+    transform: scale(1.2);
+  }
+}
 </style>
