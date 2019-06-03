@@ -34,10 +34,16 @@
     font-family: holiExtraBold;
     src: url('assets/typefaces/NanumGothic-ExtraBold.ttf');
 };
+*{
+  margin:0;
+  padding: 0;
+}
 #app {
-  font-family: holiRegular;
-  text-align: center;
+  font-family: holiRegular;  
   color: $black;
+}
+img{
+  width: 100%;
 }
 #nav {
   padding: 30px;
