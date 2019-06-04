@@ -3,7 +3,7 @@
     <div class="indexHeader__wrapper">
       <img src="@/assets/logoedit.svg" class="logo">    
       <h1>Holidaze</h1>
-    </div>   
+    </div>
       
   </div>
 </template>

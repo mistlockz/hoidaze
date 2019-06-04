@@ -1,18 +1,27 @@
 <template>
   <div class="browse">
     <BrowseHeader/>
+    <ModalSearch
+      v-if="showSuggestions"
+    />
+    <ModalFilter
+      @closeModal="toggleFilter"
+      v-if="showFilter"
+    />
     <BrowseFilter
       v-bind:mapMode="mapMode"
       @toggle="toggleMapmode"
       @filter="toggleFilter"
     />
+    
     <BrowseMap
     v-if="mapMode"
     />
+    
     <BrowseFeed
     v-else
     />
-    
+        
     <FooterContact
       @click="toggleContact"
     />
@@ -28,8 +37,11 @@ import FooterContact from '@/components/FooterContact.vue'
 import ModalContact from '@/components/ModalContact.vue'
 import BrowseHeader from '@/components/BrowseHeader.vue'
 import BrowseFilter from '@/components/BrowseFilter.vue'
+import ModalFilter from '@/components/ModalFilter.vue'
+import ModalSearch from '@/components/ModalSearch.vue'
 import BrowseFeed from '@/components/BrowseFeed.vue'
 import BrowseMap from '@/components/BrowseMap.vue'
+
 
 
 export default {
@@ -40,12 +52,14 @@ export default {
     BrowseHeader,
     BrowseFilter,
     BrowseFeed,
-    BrowseMap
+    BrowseMap,
+    ModalFilter,
+    ModalSearch
   },
   created(){
     this.getMode();
-    this.getEstablishments();
-    this.getPhp();
+    //this.getEstablishments();
+    //this.getPhp();
   },
   
   data(){
@@ -54,17 +68,20 @@ export default {
       showContact:false,
       showHint:false,
       showFilter:false,
+      selectedEstablishments: {},
     }
   },
   methods:{
     toggleContact(){          
       this.showContact = !this.showContact;
+      this.showFilter= false;
     },
     toggleMapmode(boolean){
       this.mapMode = boolean;
     },
     toggleFilter(){
-      alert("someting")
+      this.showFilter = !this.showFilter;
+      this.showContact = false;
     },
     getMode(){
       

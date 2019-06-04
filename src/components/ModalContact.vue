@@ -86,6 +86,8 @@ form{
     max-width: 100%;
     min-width: 100%;
     font-size: 16pt;
+    min-height: 10vh;
+    max-height: 30vh;
     margin-bottom: 20px;
     border-radius: 5px;
   }

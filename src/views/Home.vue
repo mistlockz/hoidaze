@@ -1,17 +1,19 @@
 <template>
   <div class="index">
+    
     <IndexCard/>
+
     <IndexHero
-    @click="navigateBrowse"
+      @click="navigateBrowse"
     />
     <FooterContact
       @click="toggleContact"
     />
     
-      <ModalContact
-        @click="toggleContact"
-        v-if="showContact"
-      />
+    <ModalContact
+      @click="toggleContact"
+      v-if="showContact"
+    />
     
     
   </div>
@@ -41,8 +43,7 @@ export default {
     toggleContact(){          
       this.showContact = !this.showContact;
     },
-    navigateBrowse(){
-      
+    navigateBrowse(){      
       this.$router.push('browse')
     }
   }
@@ -59,6 +60,4 @@ export default {
   background-position: center;
   background-size: cover;
 }
-
-
 </style>

@@ -1,17 +1,23 @@
 <template>
   <div class="browseFeed">
     <div class="browseFeed__wrapper">
-      <p>feed</p>
+      <BrowseCard/>
+      
     </div>
   </div>
 </template>
 
 <script>
+import BrowseCard from '@/components/BrowseCard.vue'
 export default {
   name: 'browseFeed',
+  components:{
+    BrowseCard,
+  },
   props: {
     
   }
+  
 }
 </script>
 
@@ -24,8 +30,8 @@ export default {
   &__wrapper{
     max-width: 900px;
     margin: 0 auto;
-    min-height:72vh;
-    
+    min-height:70vh;
+    padding-top: 2vh;    
   }
 }
 

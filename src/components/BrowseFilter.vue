@@ -1,11 +1,12 @@
 <template>
   <div class="browseFilter">
     <div class="browseFilter__wrapper">
-      <button>Filter</button>
       <div class="browseFilter__tabContainer">
         <button v-bind:class="{active: !mapMode}" @click="emitMapmode(false)">Browse</button>
         <button v-bind:class="{active: mapMode}" @click="emitMapmode(true)">Map</button>
       </div>
+      <button @click="emitFilter">Filter</button>
+      
     </div>
   </div>
 </template>
@@ -18,6 +19,9 @@ export default {
     emitMapmode(boolean){
       
       this.$emit('toggle', boolean)
+    },
+    emitFilter(){
+      this.$emit('filter')
     }
   }
 }

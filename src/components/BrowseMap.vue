@@ -18,15 +18,19 @@
         
       ></gmap-marker>
       </gmap-map>
-    
+    <BrowseCard
+    />
     </div>
   </div>
 </template>
 
 <script>
-
+import BrowseCard from '@/components/BrowseCard.vue'
 export default {
   name: 'browseMap',
+  components:{
+    BrowseCard
+  },
   props: {
     
   },
@@ -43,14 +47,12 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/main.scss';
 .browseMap{
-  background-color: $grey;
-  
+  background-color: $grey;  
   &__wrapper{
     max-width: 900px;
     margin: 0 auto;
     min-height:70vh;
-    padding-top:2vh;
-    
+    padding-top:2vh;    
   }
 }
 

@@ -31,6 +31,7 @@ img{
   &__wrapper{
     max-width: 900px;
     margin: 0 auto;
+    min-height: 50px;
     height: 10vh;
     display: flex;
     justify-content: space-between;
