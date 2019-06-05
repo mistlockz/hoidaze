@@ -12,27 +12,34 @@
     <div class="accomodation__table">
       <table>
       <tr>
-        <td class="table--left">Price:</td>
-        <td ><strong>{{}}</strong></td>
+        <td class="table__key">Price:</td>
+        <td class="table__value" ><strong>{{}}</strong></td>
       </tr>
       <tr>
-        <td>Max guests:</td>
-        <td><strong>{{}}</strong></td>
+        <td class="table__key">Max guests:</td>
+        <td class="table__value"><strong>{{}}</strong></td>
       </tr>
       <tr>
-        <td>Self Catering:</td>
-        <td><strong>{{}}</strong></td>
+        <td class="table__key">Self Catering:</td>
+        <td class="table__value"><strong>{{}}</strong></td>
       </tr>
       <tr>
-        <td>Email:</td>
-        <td><strong>{{}}</strong></td>
+        <td class="table__key">Email:</td>
+        <td class="table__value"><strong>{{}}</strong></td>
       </tr>
     </table>
+    <div class="accomodation__button">
+        <button @click="toggleBooking">Book Now</button>
+    </div>
+    
     </div>
 
-    <BrowseMap/>
+    
     <FooterContact
       @click="toggleContact"
+    />
+    <ModalBooking
+    
     />
     <ModalContact
       v-if="showContact"
@@ -45,6 +52,7 @@
 import BrowseMap from '@/components/BrowseMap.vue'
 import FooterContact from '@/components/FooterContact.vue'
 import ModalContact from '@/components/ModalContact.vue'
+import ModalBooking from '@/components/ModalBooking.vue'
 // New IMg https://images.unsplash.com/photo-1501117716987-c8c394bb29df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80
 // long img https://images.unsplash.com/photo-1548873902-8b69fb85030a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80
 
@@ -53,18 +61,25 @@ export default {
   components: {
     BrowseMap,
     FooterContact,
-    ModalContact
+    ModalContact,
+    ModalBooking
   },
   data(){
     return{      
-      showContact:false,      
+      showContact: false,
+      showBooking: false,     
     }
   },
   methods:{
     toggleContact(){          
       this.showContact = !this.showContact;
-      this.showFilter= false;
+      this.showBooking= false;
+    },
+    toggleBooking(){
+      this.showBooking = !this.showBooking;
+      this.showContact = false;
     }
+
   }}
 </script>
 
@@ -74,7 +89,16 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/main.scss';
-
+tr{
+  @extend .flex;
+}
+.table__key{
+  flex:1;
+}
+.table__value{
+  flex:2;
+  border-left: solid white 2px;
+}
 .accomodation{
   &__header{
     @extend .flex__center--center;
@@ -118,6 +142,15 @@ export default {
        border-bottom: solid white 2px;
        @extend .fontsize-s;
       }
+    }
+  }
+  &__button{
+    @extend .flex__center;
+    margin-top:20px;
+    margin-bottom: 20px;
+    & button{
+      width:80%;
+      @extend .fontsize-m;
     }
   }
 
