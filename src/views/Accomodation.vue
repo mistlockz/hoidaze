@@ -39,7 +39,8 @@
       @click="toggleContact"
     />
     <ModalBooking
-    
+    @click="toggleBooking"
+    v-if="showBooking"
     />
     <ModalContact
       v-if="showContact"

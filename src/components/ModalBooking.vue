@@ -1,22 +1,18 @@
 <template>
   <div class="booking">
     <div class="booking__wrapper">
-      <form>
+      <form @submit.prevent="submitBooking">
         <div class="booking__header">
           <h2>Booking</h2>
-          <button>X</button>
+          <button @click="emitToggle">X</button>
         </div>        
-        <div class="booking__checkin">
-          <span>Check-in:</span>
-          <span><strong>{{}}</strong></span>
-          <button>Edit</button>
+        <div v-if="checkinDate" class="booking__checkin">
+          Check-in Date: {{checkinDate}}<button @click="resetCheckin">Edit</button>
         </div>
-        <div class="booking__checkin">
-          <span>Check-out:</span>
-          <span><strong>{{}}</strong></span>
-          <button>Edit</button>
+        <div v-if="checkoutDate" class="booking__checkin">
+          Check-out Date: {{checkoutDate}}<button>Edit</button>
         </div>
-        
+        <h4>{{statusText}}</h4>
         <div class="calendar">
           <div class="calendar__header">
             <button class="back"
@@ -57,22 +53,27 @@
             <button
             v-for="tile of this.prevMonthArray"
             v-bind:key="'prev'+ tile"
-            class="calendar__day --extra"
+            class="calendar__day--extra"
+            disabled="true"
             >{{tile}}
             </button>       
             <button 
             v-for="tile of this.daysInMonth" 
             v-bind:key="tile"
             class="calendar__day"
+            @click="selectDate"
             >{{tile}}</button>
             <button
             v-for="tile of this.extraDays"
             v-bind:key="'extra'+ tile"
-            class="calendar__day --extra"
+            class="calendar__day--extra"
             disabled="true"
             >{{tile}}</button>
           </div>
         </div>
+        <span>Your Name:</span>
+        <input type="text" name="name">
+        <input type="text" name="email">
       </form>
     </div>
     
@@ -87,47 +88,78 @@ export default {
     
   },
   created(){
-    var d = new Date();
-    //console.log(d)
+    var d = new Date();    
     var currentYear = d.getFullYear();
-    
+    this.todayYear = currentYear;   
     this.year = currentYear;
-
-    var currentMonth = d.getMonth();
-    //console.log(currentMonth)
-    
+    var currentMonth = d.getMonth();    
     this.month = currentMonth;
+    this.todayMonth = currentMonth;
+    var today = d.getDate();
+    this.todayDate = today;
+    this.buildCalendar(this.month, this.year)     
+  },
+  mounted(){
+    this.setPastDays();
     
-    this.buildCalendar(this.month, this.year)
-
-   
-    
-    
-      
   },
   methods:{
     buildCalendar(month, year){
       this.setDaysInMonth(month, year);
       this.setOffsetDays(month, year);
       this.setExtraDays(this.daysInMonth, this.offsetDays)
-      this.setDaysLastMonth(month, year)
-      
+      this.setDaysLastMonth(month, year)      
     },
-    nextMonth(){
+    setPastDays(){
+      var days = document.querySelectorAll('.calendar__day'); 
+      var pastDays = document.querySelectorAll('.calendar__day--past');
+      var currentDay = document.querySelectorAll('.calendar__day--today')   
+      if(this.month == this.todayMonth && this.year == this.todayYear){
+        alert("same month")      
+        var today = this.todayDate;
+        for(var i of days){          
+          if(i.innerHTML < today){
+            i.disabled="true";
+            i.className = "calendar__day--past"
+          }
+          if(i.innerHTML == today){
+            i.className = "calendar__day--today"
+          }
+        }
+      }else{
+        for(var i of pastDays){
+          console.log(i)
+          i.disabled="default";
+          i.className = "calendar__day";
+          
+        }
+        for(var i of currentDay){
+          i.className = "calendar__day";
+        }
+      }
+    },
+    nextMonth(){      
       this.month++;
       if(this.month==12){
         this.month = 0;
         this.year++;
       }
       this.buildCalendar(this.month, this.year);
+      this.setPastDays();
     },
     prevMonth(){
-      this.month--;
+      if(this.year == this.todayYear && this.month == this.todayMonth){
+        alert("cant go back")
+      }else{
+        this.month--;
       if(this.month == -1){
         this.month = 11;
         this.year--;
       }
       this.buildCalendar(this.month, this.year);
+      this.setPastDays();
+      }
+      
     },
     setDaysInMonth(month, year){      
       var numberOfDays = new Date(year, month+1, 0).getDate();     
@@ -149,14 +181,50 @@ export default {
       for(var i = startDate; i <= prevMonthDays; i++){
         array.push(i)
       }
-      console.log(array)
+      
       this.prevMonthArray = array;
+    },
+    emitToggle(){
+      this.$emit('click');
+    },
+    selectDate(event){
+      //alert(event.target.innerHTML)
+      var year = this.year;
+      var month = this.month.toString();
+      if(month.length == 1){
+        month = 0 + month;
+      }      
+      var date = event.target.innerHTML;
+      if(date.length == 1){
+        date = 0 + date;
+      }      
+      var fulldate = year + "-" + month + "-" + date;
+      if(this.checkinDate == ""){
+        this.statusText = "Please select check-out date:";
+        this.checkinDate = fulldate;
+      }else{
+        this.statusText= "";
+        this.checkoutDate = fulldate;
+      }
+    },
+    resetCheckin(){
+      this.checkinDate = "";
+      this.statusText = "Please select check-in date:"
+    },
+    resetCheckout(){
+      this.checkoutDate = "";
+      this.statusText = "Please select check-out date:"
     }
+    
+
 
     
   },
   data (){
-    return{    
+    return{
+      todayYear: Number,
+      todayMonth: Number,
+      todayDate: Number,  
       year: Number,
       month: Number,
       date: Number,
@@ -179,6 +247,9 @@ export default {
         "December"
       ],
       prevMonthArray:Array,
+      statusText:"Please select check-in date:",
+      checkinDate:"",
+      checkoutDate: "",
     }
   }
 }
@@ -217,6 +288,9 @@ h2{
   &__checkin{
     @extend .flex__left--center;
     padding-bottom:20px;
+    & button{
+      margin-left: 10px;
+    }
   }
 }
 .calendar{
@@ -225,26 +299,44 @@ h2{
     @extend .flex__between--center;
     background-color: white;
     color:black;
+    padding:10px;
     
   }
   &__body{
-      width:100%;   
+      width:100%;
+      display: flex;
+      flex-wrap: wrap; 
   }
   &__day{
-      width:13%;
+      min-width: 13%;
+      flex:1;
+      margin:1px;
       background-color: white;
-      color:$ui-blue;
+      color:$black;
       border: solid black 1px;
-      padding:10px 0px 10px 0px;
-      
-      
+      padding:10px 0px 10px 0px;   
+      &--extra{
+        @extend .calendar__day;        
+        background-color: $grey;
+        color: $grey-dark;        
+      }
+      &--today{
+        @extend .calendar__day;
+        background-color: $ui-blue;
+      }
+      &--past{
+        @extend .calendar__day;
+        background-color: $grey;
+        color: $grey-dark; 
+      }
   }
   &__week{
     width:100%;
+    display: flex;
     
   }
   &__weekday{
-      width:13%;
+      flex:1;
       background-color: white;
       color:$ui-blue;
       border: solid black 1px;
@@ -252,8 +344,6 @@ h2{
       padding:10px 0px 10px 0px;
       display: inline-block;
   }
-  .--extra{
-    background-color: $grey;
-  }
+  
 }
 </style>
