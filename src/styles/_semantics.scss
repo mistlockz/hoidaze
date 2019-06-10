@@ -36,7 +36,10 @@ main{
 table{
     background-color: $grey;
 }
-
+.errorText{
+    color:$ui-red;
+    
+}
 .flex{
     display: flex;
     &__center{

@@ -1,8 +1,11 @@
 <template>
   <div class="browse">
-    <BrowseHeader/>
+    <BrowseHeader
+    @input="searchSuggestion"
+    />
     <ModalSearch
-      v-if="showSuggestions"
+      v-if="showSuggestion"
+
     />
     <ModalFilter
       @closeModal="toggleFilter"
@@ -66,7 +69,7 @@ export default {
     return{
       mapMode:Boolean,
       showContact:false,
-      showHint:false,
+      showSuggestion:false,
       showFilter:false,
       selectedEstablishments: {},
     }
@@ -83,6 +86,9 @@ export default {
       this.showFilter = !this.showFilter;
       this.showContact = false;
     },
+    toggleSuggestion(){
+      this.showSuggestion = !this.showSuggestion
+    },
     getMode(){
       
       if(localStorage.getItem('mapmode') == 'true'){
@@ -92,6 +98,14 @@ export default {
         this.mapMode=false;
       }
       
+    },
+    searchSuggestion(input){
+      if(input == ""){
+        this.showSuggestion=false;        
+      }
+      else{
+        this.showSuggestion = true;
+      }
     },
     getEstablishments(){
       const corsfix = 'https://cors-anywhere.herokuapp.com/'

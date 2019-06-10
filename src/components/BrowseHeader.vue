@@ -3,7 +3,7 @@
     <div class="browseHeader__wrapper">
       <img src="@/assets/logoedit.svg" class="logo">
       <div class="browseHeader__search">
-        <input name="search" placeholder="Search accomodation" autocomplete="off">
+        <input name="search" placeholder="Search accomodation" autocomplete="off" @keyup="emitInput">
         <button>Search</button>
       </div>
       
@@ -16,6 +16,11 @@ export default {
   name: 'new',
   props: {
     
+  },
+  methods:{
+    emitInput(e){
+      this.$emit("input", e.target.value)
+    }
   }
 }
 </script>
@@ -50,8 +55,7 @@ input{
   max-width: 400px;
 }
 button{
-  margin:10px;
-  
+  margin:10px;  
 }
 
 </style>

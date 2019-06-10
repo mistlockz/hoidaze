@@ -1,19 +1,19 @@
 <template>
   <div class="booking">
     <div class="booking__wrapper">
-      <form @submit.prevent="submitBooking">
+      <form @submit.prevent>
         <div class="booking__header">
           <h2>Booking</h2>
           <button @click="emitToggle">X</button>
         </div>        
         <div v-if="checkinDate" class="booking__checkin">
-          Check-in Date: {{checkinDate}}<button @click="resetCheckin">Edit</button>
+          Check-in Date: {{checkinDate}}<button @click="resetCheckin" v-if="!checkoutDate">Edit</button>
         </div>
         <div v-if="checkoutDate" class="booking__checkin">
-          Check-out Date: {{checkoutDate}}<button>Edit</button>
+          Check-out Date: {{checkoutDate}}<button @click="resetCheckout">Edit</button>
         </div>
-        <h4>{{statusText}}</h4>
-        <div class="calendar">
+        <h4>{{statusText}}<strong class="errorText">{{errorText}}</strong></h4>
+        <div class="calendar" v-if="showCalendar">
           <div class="calendar__header">
             <button class="back"
               @click="prevMonth"
@@ -72,8 +72,10 @@
           </div>
         </div>
         <span>Your Name:</span>
-        <input type="text" name="name">
-        <input type="text" name="email">
+        <input type="text" name="name" class="booking__input">
+        <span>Your E-mail:</span>
+        <input type="text" name="email"  class="booking__input">
+        <button type="submit" class="booking__submit" @click="validateForm">Confirm Booking</button>
       </form>
     </div>
     
@@ -115,7 +117,7 @@ export default {
       var pastDays = document.querySelectorAll('.calendar__day--past');
       var currentDay = document.querySelectorAll('.calendar__day--today')   
       if(this.month == this.todayMonth && this.year == this.todayYear){
-        alert("same month")      
+            
         var today = this.todayDate;
         for(var i of days){          
           if(i.innerHTML < today){
@@ -127,14 +129,14 @@ export default {
           }
         }
       }else{
-        for(var i of pastDays){
-          console.log(i)
-          i.disabled="default";
-          i.className = "calendar__day";
+        for(var j of pastDays){
+          
+          j.removeAttribute('disabled')
+          j.className = "calendar__day";
           
         }
-        for(var i of currentDay){
-          i.className = "calendar__day";
+        for(var k of currentDay){
+          k.className = "calendar__day";
         }
       }
     },
@@ -149,7 +151,7 @@ export default {
     },
     prevMonth(){
       if(this.year == this.todayYear && this.month == this.todayMonth){
-        alert("cant go back")
+        
       }else{
         this.month--;
       if(this.month == -1){
@@ -167,7 +169,7 @@ export default {
     },
     setOffsetDays(month, year){
       var offset= new Date(year,month, 1).getDay();
-      //console.log(offset)
+      
       this.offsetDays = offset;
     },
     setExtraDays(num, num2){
@@ -188,40 +190,55 @@ export default {
       this.$emit('click');
     },
     selectDate(event){
-      //alert(event.target.innerHTML)
+      
       var year = this.year;
       var month = this.month.toString();
       if(month.length == 1){
         month = 0 + month;
       }      
       var date = event.target.innerHTML;
+
       if(date.length == 1){
         date = 0 + date;
       }      
-      var fulldate = year + "-" + month + "-" + date;
+      var fulldate = year + "-" + month + "-" + date;      ;
       if(this.checkinDate == ""){
+        this.firstDate = year+month+date;
         this.statusText = "Please select check-out date:";
         this.checkinDate = fulldate;
       }else{
-        this.statusText= "";
-        this.checkoutDate = fulldate;
+        var secondDate = year+month+date;       
+        if(secondDate <= this.firstDate){
+          this.errorText= 'The check-out date cant be prior to the check-in'
+        }else{
+          this.errorText='';
+          this.statusText= "";
+          this.checkoutDate = fulldate;
+          this.showCalendar = false;
+        }
+        
       }
     },
     resetCheckin(){
       this.checkinDate = "";
+      this.errorText = ""
       this.statusText = "Please select check-in date:"
     },
     resetCheckout(){
       this.checkoutDate = "";
       this.statusText = "Please select check-out date:"
+      this.showCalendar = true;
+    },
+    validateForm(){
+      
     }
-    
 
 
     
   },
   data (){
     return{
+      showCalendar: true,
       todayYear: Number,
       todayMonth: Number,
       todayDate: Number,  
@@ -248,8 +265,10 @@ export default {
       ],
       prevMonthArray:Array,
       statusText:"Please select check-in date:",
+      errorText:"",
       checkinDate:"",
       checkoutDate: "",
+      firstDate: ''
     }
   }
 }
@@ -259,14 +278,16 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/main.scss';
 h2{
-  margin-bottom: 20px;
+  padding: 20px 0px 20px 0px;
 }
 .booking{
   position: fixed;  
   width:100%;  
   bottom:0;
+  
   &__header{
     @extend .flex__between--center;
+
     & button{
       background-color: $ui-red;
     }
@@ -277,11 +298,13 @@ h2{
     margin: 0 auto;
     background-color: $orange;
     border-radius: 10px;
-    
+    padding-bottom:40px;  
     & form{
       padding-top: 20px;
       width:90%;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
       
     }
   }
@@ -291,6 +314,17 @@ h2{
     & button{
       margin-left: 10px;
     }
+  }
+  &__input{
+    margin-bottom:15px;
+    @extend .fontsize-m;
+    border:none;
+    border-radius: 5px;
+  }
+  &__submit{
+    background-color: $ui-green;
+    
+    
   }
 }
 .calendar{
@@ -346,4 +380,5 @@ h2{
   }
   
 }
+
 </style>
