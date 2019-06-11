@@ -1,24 +1,23 @@
 <template>
   <div class="browseCard">
     <div class="cardImg">
-      <img src="@/assets/logo.png">
+      <img v-bind:src="place.imageUrl">
     </div>
     <div class="cardInfo">
       <div class="cardInfo__top">
-        <h2>Accomodation name</h2>
+        <h2>{{place.establishmentName}}</h2>
       </div>
       <div class="cardInfo__bottom">
         <div class="cardInfo__content">
           <p>
             Max-guests: <br>
-            <strong>20</strong> <br>
-            Price from: <br>
-            <strong>100 N0K</strong>
-          
+            <strong>{{place.maxGuests}}</strong> <br>
+            Prices from: <br>
+            <strong>{{place.price}} £</strong>          
           </p>
         </div>
         <div class="cardInfo__button">
-          <button>View</button>
+          <button @click="navigateAccomodation">View</button>
         </div>
       </div>
     </div>
@@ -29,7 +28,12 @@
 export default {
   name: 'BrowseCard',
   props: {
-    
+    place:Object,
+  },
+  methods:{
+    navigateAccomodation(){
+      this.$router.push({ name: 'accomodation', params: { id: this.place.id }})
+    }
   }
 }
 </script>

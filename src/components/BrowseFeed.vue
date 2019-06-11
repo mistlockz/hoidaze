@@ -1,7 +1,12 @@
 <template>
   <div class="browseFeed">
     <div class="browseFeed__wrapper">
-      <BrowseCard/>
+      <BrowseCard
+      v-for="place in accomodations"
+      v-bind:key="place.id"
+      v-bind:place="place"
+      
+      />
       
     </div>
   </div>
@@ -15,7 +20,7 @@ export default {
     BrowseCard,
   },
   props: {
-    
+    accomodations: Array,
   }
   
 }

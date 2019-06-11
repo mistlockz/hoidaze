@@ -1,11 +1,8 @@
 <template>
   <div class="contact">
-    <p><strong>Name: </strong>SomeName</p>
-    <p><strong>E-mail: </strong> <a :href="test">{{test}}</a></p>
-    <p> <strong>Message:</strong> <br>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-      Repudiandae quasi accusamus qui, nisi iste cum perferendis, 
-      voluptatem itaque neque omnis numquam dolorum tempora optio 
-      perspiciatis in dolores reiciendis quia ipsum.
+    <p><strong>Name: </strong>{{message.clientName}}</p>
+    <p><strong>E-mail: </strong> <a :href="'mailto:'+message.email">{{message.email}}</a></p>
+    <p> <strong>Message:</strong> <br>{{message.message}}
     </p>
   </div>
 </template>
@@ -14,7 +11,7 @@
 export default {
   name: 'AdminMessage',
   props: {
-    
+    message:Object,
   },
   data(){
     return{

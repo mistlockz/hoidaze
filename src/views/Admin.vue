@@ -6,14 +6,14 @@
         <form @submit.prevent>
           <h2>Administrator Login</h2>
           <span>Username</span>
-          <input type="text">
+          <input type="text" v-model="username">
           <span>Password:</span>
-          <input type="password">
+          <input type="password" v-model="password">
+          <span>Invalid login-information</span>
           <button type="submit" @click="login">Login</button>
         </form>
       </div>
-    </div>
-      
+    </div>      
   </div>
 </template>
 
@@ -25,11 +25,32 @@ export default {
   components: {
     IndexCard
   },
+  data(){
+    return {
+      username:"",
+      password:"",
+    }
+  },
+  created(){
+    localStorage.setItem('username','morten');
+    localStorage.setItem('password','1234');
+  },
   methods:{
-    login(username, password){
-
+    login(){
+      if(localStorage.getItem('username')== this.username && localStorage.getItem('password')== this.password){
+        var sessionId = this.generateSession();        
+        sessionStorage.setItem('sessionId',sessionId)
+        this.$router.push('/admin/messages')
+      }else{
+        this.username=""
+        this.password=""
+      }
+    },
+    generateSession(){
+      return Math.floor((Math.random() * 10000) + 1);
     }
   }
+
 }
 </script>
 <style lang="scss" scoped>

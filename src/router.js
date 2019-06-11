@@ -20,10 +20,10 @@ export default new Router({
     {
       path: '/browse',
       name: 'browse',
-      component: Browse
+      component: Browse,      
     },
     {
-      path:'/accomodation',
+      path:'/accomodation/:id',
       name: 'accomodation',
       component: Accomodation
     },

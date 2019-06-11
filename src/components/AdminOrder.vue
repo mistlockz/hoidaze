@@ -1,13 +1,13 @@
 <template>
   <div class="order">
-    <h2>EstablishmentName</h2>
+    <h2>{{order.establishment}}</h2>
     <div class="order__flex">
-      <p>Name: SomeName</p>
-      <p>Checkin: <strong>05/05/2009</strong></p>
+      <p>Name: {{order.clientName}}</p>
+      <p>Checkin: <strong>{{order.checkin}}</strong></p>
     </div>
     <div class="order__flex">
-      <p>E-mail: <a :href="test">{{test}}</a></p>
-      <p>Checkout: <strong>05/05/2009</strong> </p>
+      <p>E-mail: <a :href="'mailto:'+order.email">{{order.email}}</a></p>
+      <p>Checkout: <strong>{{order.checkout}}</strong> </p>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@
 export default {
   name: 'AdminOrder',
   props: {
-    
+    order:Object,
   },
   data(){
     return{

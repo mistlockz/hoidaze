@@ -1,9 +1,12 @@
 <template>
   <div class="messages">
-    <AdminHeader/>
+    <AdminHeader @click="logout"/>
     <AdminNav/>
-    <AdminMessage/>
-    <AdminMessage/>
+    <AdminMessage
+      v-for="message in messages"
+      v-bind:key="message.id"
+      v-bind:message="message"
+    />
   </div>
 </template>
 
@@ -18,6 +21,38 @@ export default {
     AdminHeader,
     AdminNav,
     AdminMessage
+  },
+  data(){
+    return{
+      messages:[],
+    }
+  },
+  created(){
+    this.checkSession();
+    this.getMessages();
+  },
+  methods:{    
+    checkSession(){
+      if(sessionStorage.getItem('sessionId')== null){
+        this.$router.push('/admin');
+      }
+    },
+    logout(){
+      sessionStorage.removeItem('sessionId');
+      this.checkSession();
+    },
+    getMessages(){
+      const corsfix = 'https://cors-anywhere.herokuapp.com/';
+      const app = this;
+      fetch( corsfix + 'http://www.wallemdesign.com/server/contact.json')
+      .then(function(response) {        
+        return response.json();
+      })
+      .then(function(myJson) {
+        console.table(myJson)
+        app.messages = myJson;        
+      });
+    },
   }
 }
 </script>
@@ -25,6 +60,6 @@ export default {
 @import '@/styles/main.scss';
 .messages{
   background-color: $grey;
-  min-height: 100vh;
+  height: 100vh;
 }
 </style>

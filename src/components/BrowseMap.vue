@@ -6,19 +6,25 @@
       :zoom="11"
       style="width:100%;  height: 40vh;"
       ><gmap-marker
+        v-for="place in accomodations"
+        :id="place.id"
+        v-bind:key="place.id"
         :icon="{
           url:'http://www.wallemdesign.com/map-marker.svg',
           size: {width: 46, height: 46, f: 'px', b: 'px'}, 
-          scaledSize: {width: 40, height: 40, f: 'px', b: 'px'}
+          scaledSize: {width: 40, height: 40, f: 'px', b: 'px'},
+          id: place.id,
         }"
-        :position="{lat:60.393388, lng:5.228720 }"
-        
+        :position="{lat:place.googleLat, lng: place.googleLong, }"
+        @click="updateCard(place.id)"
         
         
         
       ></gmap-marker>
       </gmap-map>
     <BrowseCard
+      v-bind:place="selectedPlace"
+      v-if="showPlace"
     />
     </div>
   </div>
@@ -32,12 +38,24 @@ export default {
     BrowseCard
   },
   props: {
-    
+    accomodations: Array,
   },
   data(){
     return {
       center: {lat:60.3917426, lng: 5.3274496},
+      selectedPlace: {},
+      showPlace: false,
       
+    }
+  },
+  methods:{
+    updateCard(id){
+      this.showPlace = true;
+      this.accomodations.forEach(place => {
+        if(place.id == id){
+          this.selectedPlace = place;
+        }
+      });
     }
   }
 }

@@ -1,31 +1,32 @@
 <template>
   <div class="accomodation">    
     <div class="accomodation__header">
-      <h2>Accomodation name</h2>
+      <h2>{{place.establishmentName}}</h2>
     </div>
     <div class="accomodation__img">
        
     </div>
     <div class="accomodation__text">
-       <p>API INFO IN HERE YO!</p>
+       <p>{{place.description}}</p>
     </div>
     <div class="accomodation__table">
       <table>
       <tr>
         <td class="table__key">Price:</td>
-        <td class="table__value" ><strong>{{}}</strong></td>
+        <td class="table__value" ><strong>{{place.price}} £</strong></td>
       </tr>
       <tr>
         <td class="table__key">Max guests:</td>
-        <td class="table__value"><strong>{{}}</strong></td>
+        <td class="table__value"><strong>{{place.maxGuests}}</strong></td>
       </tr>
       <tr>
         <td class="table__key">Self Catering:</td>
-        <td class="table__value"><strong>{{}}</strong></td>
+        <td class="table__value" v-if="place.selfCatering"><strong>Yes</strong></td>
+        <td class="table__value" v-else><strong>No</strong></td>
       </tr>
       <tr>
         <td class="table__key">Email:</td>
-        <td class="table__value"><strong>{{}}</strong></td>
+        <td class="table__value"><strong>{{place.establishmentEmail}}</strong></td>
       </tr>
     </table>
     <div class="accomodation__button">
@@ -54,6 +55,7 @@ import BrowseMap from '@/components/BrowseMap.vue'
 import FooterContact from '@/components/FooterContact.vue'
 import ModalContact from '@/components/ModalContact.vue'
 import ModalBooking from '@/components/ModalBooking.vue'
+
 // New IMg https://images.unsplash.com/photo-1501117716987-c8c394bb29df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80
 // long img https://images.unsplash.com/photo-1548873902-8b69fb85030a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80
 
@@ -68,8 +70,17 @@ export default {
   data(){
     return{      
       showContact: false,
-      showBooking: false,     
+      showBooking: false,  
+      placeId: String,
+      rawAccomodation: Array,
+      place: Object,
     }
+  },
+  created(){
+    this.placeId = this.$route.params.id;
+    this.getEstablishment();
+
+
   },
   methods:{
     toggleContact(){          
@@ -79,8 +90,37 @@ export default {
     toggleBooking(){
       this.showBooking = !this.showBooking;
       this.showContact = false;
+    },
+    getEstablishment(){
+      const corsfix = 'https://cors-anywhere.herokuapp.com/';
+      const app = this;
+      fetch( corsfix + 'http://www.wallemdesign.com/server/establishments.json')
+      .then(function(response) {        
+        return response.json();
+      })
+      .then(function(myJson) {
+        app.rawAccomodation = myJson;
+        //console.log(app.rawAccomodation)
+        app.rawAccomodation.forEach(app.matchPlace)
+        
+      });
+    },
+    matchPlace(obj){
+      if (obj.id == this.placeId){        
+        this.place = obj;
+        if(obj.selfCatering == "true"){
+          this.place.selfCatering = true;
+        }else{
+          this.place.selfCatering = false;
+        }       
+        this.setPlaceBackground();
+      }                 
+    },
+    setPlaceBackground(){
+      var imgSrc = "url('" + this.place.imageUrl +"')"
+      var imgContainer = document.querySelectorAll(".accomodation__img")[0];
+      imgContainer.style.backgroundImage = imgSrc;
     }
-
   }}
 </script>
 

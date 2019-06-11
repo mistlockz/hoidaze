@@ -1,6 +1,8 @@
 <template>
   <div class="manage">
-    <AdminHeader/>
+    <AdminHeader
+      @click="logout"
+    />
     <AdminNav/>
     <div class="manage__button">
       <button @click="toggleAccomodationModal">Add New Accomodation</button>
@@ -36,10 +38,22 @@ export default {
       showAccomodation: false,
     }
   },
+  created(){
+    this.checkSession();
+  },
   methods:{
     toggleAccomodationModal(){
       this.showAccomodation = !this.showAccomodation;
-    }
+    },
+    checkSession(){
+      if(sessionStorage.getItem('sessionId')== null){
+        this.$router.push('/admin');
+      }
+    },
+    logout(){
+      sessionStorage.removeItem('sessionId');
+      this.checkSession();
+    },
   }
 }
 </script>

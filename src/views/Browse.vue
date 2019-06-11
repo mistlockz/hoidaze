@@ -19,10 +19,12 @@
     
     <BrowseMap
     v-if="mapMode"
+    v-bind:accomodations="rawAccomodation"
     />
     
     <BrowseFeed
     v-else
+    v-bind:accomodations="rawAccomodation"
     />
         
     <FooterContact
@@ -61,7 +63,7 @@ export default {
   },
   created(){
     this.getMode();
-    //this.getEstablishments();
+    this.getEstablishments();
     //this.getPhp();
   },
   
@@ -72,6 +74,7 @@ export default {
       showSuggestion:false,
       showFilter:false,
       selectedEstablishments: {},
+      rawAccomodation: [],
     }
   },
   methods:{
@@ -81,6 +84,7 @@ export default {
     },
     toggleMapmode(boolean){
       this.mapMode = boolean;
+      localStorage.setItem("mapmode", boolean)
     },
     toggleFilter(){
       this.showFilter = !this.showFilter;
@@ -108,13 +112,16 @@ export default {
       }
     },
     getEstablishments(){
-      const corsfix = 'https://cors-anywhere.herokuapp.com/'
-      fetch( corsfix + 'http://www.wallemdesign.com/establishments.json')
-      .then(function(response) {
+      const corsfix = 'https://cors-anywhere.herokuapp.com/';
+      const app = this;
+      fetch( corsfix + 'http://www.wallemdesign.com/server/establishments.json')
+      .then(function(response) {        
         return response.json();
       })
       .then(function(myJson) {
-        console.log(JSON.stringify(myJson));
+        app.rawAccomodation = myJson;
+        app.rawAccomodation.forEach(app.fixCoordinates)
+        
       });
     },
     getPhp(){
@@ -127,6 +134,12 @@ export default {
       };
       xhttp.open("GET", corsfix + "http://www.wallemdesign.com/test.php", true);
       xhttp.send();
+    },
+    fixCoordinates(obj){
+      console.log(obj.googleLat)
+      obj.googleLat = parseFloat(obj.googleLat)
+      obj.googleLong = parseFloat(obj.googleLong)
+      console.log(obj.googleLat)
     }
   }
 }
