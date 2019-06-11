@@ -1,9 +1,12 @@
 <template>
-  <div class="adminNav">
-    <router-link :to="{name: 'AdminOrders'}" class="adminNav__link">Orders</router-link>
-    <router-link :to="{name: 'AdminMessages'}" class="adminNav__link">Messages</router-link>
-    <router-link :to="{name: 'AdminManage'}" class="adminNav__link">Manage</router-link>
+  <div class="adminNav__wrapper">
+    <div class="adminNav">
+      <router-link :to="{name: 'AdminOrders'}" class="adminNav__link">Orders</router-link>
+      <router-link :to="{name: 'AdminMessages'}" class="adminNav__link">Messages</router-link>
+      <router-link :to="{name: 'AdminManage'}" class="adminNav__link">Manage</router-link>
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -34,6 +37,9 @@ export default {
   }
   &__link:hover{
       cursor: pointer;      
+  }
+  &__wrapper{
+    background-color: $orange;
   }
 }
 .router-link-exact-active{
