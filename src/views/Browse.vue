@@ -5,26 +5,32 @@
     />
     <ModalSearch
       v-if="showSuggestion"
+      v-bind:items="searchAccomodations"
+      v-bind:input="filters.search"
+      v-bind:nomatch="searchMatch"
 
     />
     <ModalFilter
       @closeModal="toggleFilter"
-      v-if="showFilter"
+      v-show="showFilter"
+      @emitFilter="setFormFilter"
     />
     <BrowseFilter
       v-bind:mapMode="mapMode"
       @toggle="toggleMapmode"
       @filter="toggleFilter"
+      
     />
     
     <BrowseMap
-    v-if="mapMode"
-    v-bind:accomodations="rawAccomodation"
+      v-if="mapMode"
+      v-bind:accomodations="filteredAccomodation"
     />
     
     <BrowseFeed
-    v-else
-    v-bind:accomodations="rawAccomodation"
+      v-else
+      v-bind:accomodations="filteredAccomodation"
+      v-bind:filterMatch="filterMatch"
     />
         
     <FooterContact
@@ -73,8 +79,16 @@ export default {
       showContact:false,
       showSuggestion:false,
       showFilter:false,
-      selectedEstablishments: {},
+
+
       rawAccomodation: [],
+      filters:{},
+      searchMatch: true,
+      filterMatch: true,
+
+      searchAccomodations:[],
+      filteredAccomodation:[],
+
     }
   },
   methods:{
@@ -104,11 +118,22 @@ export default {
       
     },
     searchSuggestion(input){
+      const app = this;
       if(input == ""){
-        this.showSuggestion=false;        
+        this.filters.search = "";
+        this.showSuggestion=false;  
+        this.searchAccomodations= []  
       }
       else{
+        this.filters.search = input;
         this.showSuggestion = true;
+        //console.log(app.filters)
+        app.searchAccomodations = app.rawAccomodation.filter(app.setSearchFilter)
+        if(app.searchAccomodations.length==0){
+          app.searchMatch = false;
+        }else{
+          app.searchMatch = true;
+        }
       }
     },
     getEstablishments(){
@@ -121,6 +146,7 @@ export default {
       .then(function(myJson) {
         app.rawAccomodation = myJson;
         app.rawAccomodation.forEach(app.fixCoordinates)
+        app.filteredAccomodation = app.rawAccomodation;
         
       });
     },
@@ -135,11 +161,49 @@ export default {
       xhttp.open("GET", corsfix + "http://www.wallemdesign.com/test.php", true);
       xhttp.send();
     },
-    fixCoordinates(obj){
-      console.log(obj.googleLat)
+    fixCoordinates(obj){      
       obj.googleLat = parseFloat(obj.googleLat)
-      obj.googleLong = parseFloat(obj.googleLong)
-      console.log(obj.googleLat)
+      obj.googleLong = parseFloat(obj.googleLong)      
+    },
+    setSearchFilter(search){     
+     var searchToLower = search.establishmentName.toLowerCase();
+     var inputToLower = this.filters.search.toLowerCase();
+     return searchToLower.includes(inputToLower);    
+    },
+    setFormFilter(obj){  
+      const app = this;    
+      this.filters.guests = obj.guests;
+      this.filters.price  = obj.price;
+      this.filters.catering = obj.catering;
+      
+      var arrayFilterPrice = app.rawAccomodation.filter(app.filterPrice);
+      var arrayFilterGuests = arrayFilterPrice.filter(app.filterGuests);
+      app.filteredAccomodation = arrayFilterGuests;
+
+      if(app.filters.catering == "null"){
+        app.filteredAccomodation = arrayFilterGuests;
+      }else{
+        var arrayFilterCatering = arrayFilterGuests.filter(app.filterFalseCatering);
+        app.filteredAccomodation = arrayFilterCatering;
+      }
+
+      if(app.filteredAccomodation.length == 0){
+        app.filterMatch = false;
+      }else{
+        app.filterMatch = true;
+      }
+      this.toggleFilter();
+      
+
+    },
+    filterPrice(obj){     
+      return parseInt(obj.price) < this.filters.price;
+    },
+    filterFalseCatering(obj){      
+      return obj.selfCatering == this.filters.catering;
+    },
+    filterGuests(obj){
+      return parseInt(obj.maxGuests) > this.filters.guests;
     }
   }
 }

@@ -5,15 +5,15 @@
     </div>
     <div class="cardInfo">
       <div class="cardInfo__top">
-        <h2>Accomodation name</h2>
+        <h2>{{place.establishmentName}}</h2>
       </div>
       <div class="cardInfo__bottom">
         <div class="cardInfo__content">
           <p>
             Max-guests: <br>
-            <strong>20</strong> <br>
-            Price from: <br>
-            <strong>100 N0K</strong>
+            <strong>{{place.maxGuests}}</strong> <br>
+            Prices from: <br>
+            <strong>{{place.price}}$</strong>
           
           </p>
         </div>
@@ -29,7 +29,7 @@
 export default {
   name: 'AdminAccomodation',
   props: {
-    
+    place:Object
   }
 }
 </script>

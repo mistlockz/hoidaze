@@ -7,7 +7,7 @@
       v-bind:place="place"
       
       />
-      
+      <h2 v-if="!filterMatch">No Results</h2>
     </div>
   </div>
 </template>
@@ -21,6 +21,7 @@ export default {
   },
   props: {
     accomodations: Array,
+    filterMatch: true,
   }
   
 }

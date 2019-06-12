@@ -8,8 +8,11 @@
       <button @click="toggleAccomodationModal">Add New Accomodation</button>
     </div>
     <div class="manage__wrapper">
-      <AdminAccomodation/>
-      <AdminAccomodation/>
+      <AdminAccomodation
+        v-for="place in establishments"
+        v-bind:key="place.id"
+        v-bind:place="place"
+      />
     </div>
     <ModalAccomodation
       @click="toggleAccomodationModal"
@@ -36,10 +39,12 @@ export default {
   data(){
     return{
       showAccomodation: false,
+      establishments: Array,
     }
   },
   created(){
     this.checkSession();
+    this.getEstablishments();
   },
   methods:{
     toggleAccomodationModal(){
@@ -53,6 +58,18 @@ export default {
     logout(){
       sessionStorage.removeItem('sessionId');
       this.checkSession();
+    },
+    getEstablishments(){
+      const corsfix = 'https://cors-anywhere.herokuapp.com/';
+      const app = this;
+      fetch( corsfix + 'http://www.wallemdesign.com/server/establishments.json')
+      .then(function(response) {        
+        return response.json();
+      })
+      .then(function(myJson) {
+        console.table(myJson)
+        app.establishments = myJson;        
+      });
     },
   }
 }

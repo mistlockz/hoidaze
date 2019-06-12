@@ -6,21 +6,27 @@
         <button @click="emitClose">X</button>        
       </div>
 
-      <form @submit.prevent="showResults">
-          <span>Guests: <strong>{{}}</strong></span>
-          <input type="range" name="guests" min="1" max="25" class="slider" >
-          <span>Max Price: <strong>{{}}</strong></span>
-          <input type="range" name="maxprice" min="1" max="400" class="slider">
+      <form @submit.prevent="">
+          <span>Guests: <strong>{{filter.guests}}</strong></span>
+          <input type="range" name="guests" min="1" max="25" class="slider" v-model="filter.guests" >
+          <span>Max Price: <strong>{{filter.price}}$</strong></span>
+          <input type="range" name="maxprice" min="1"   max="400" class="slider" v-model="filter.price">
+          
+          <span>Self Catering:</span>
           <div class="cateringContainer">
-            <span>Self Catering:</span>
-            <input type="checkbox" name="" class="checkbox">
-          </div>
+            <label>Unset</label>
+            <input type="radio" name="catering" value="null"  class="radio" v-model="filter.catering">
+            <label>No</label>
+            <input type="radio" name="catering" value="false"  class="radio" v-model="filter.catering">
+            <label for="Tree">Yes</label>
+            <input type="radio" name="catering" value="true"  class="radio" v-model="filter.catering">
+          </div>          
           <h2>Sort by:</h2>
           <span>Price Low - high:</span>
           <input type="radio" name="sort" class="radio">
           <span>Price high - low:</span>
           <input type="radio" name="sort" class="radio">
-          <button>Show Results</button>          
+          <button @click="emitFilter">Show Results</button>        
       </form>
     </div>    
   </div>
@@ -31,13 +37,23 @@ export default {
   name: 'new',
   props: {
     
+  }, 
+  data(){
+    return{
+      filter:{
+        guests:1,
+        price: 400,
+        catering:"null"
+      }      
+    }
   },
   methods:{
     emitClose(){
       this.$emit('closeModal')
     },
-    showResults(){
-      console.log('results')
+    emitFilter(){ 
+      //console.log(this.filter.catering)    
+      this.$emit('emitFilter', this.filter)
     }
   }
 }
@@ -72,6 +88,7 @@ export default {
 .cateringContainer{
   display: flex;
   align-items: center;
+  padding:10px;
 }
 form{
   display: flex;
@@ -94,12 +111,13 @@ form{
   & .radio{
     height: 20px;
     width: 20px;
-    margin-bottom: 10px;
+    margin: 10px;
   }
   & .checkbox{
     height: 20px;
     width: 20px;
     margin-left: 10px;
+    margin-right: 10px;
   }
   & .slider{
      -webkit-appearance: none;

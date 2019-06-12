@@ -2,9 +2,14 @@
   <div class="modalSearch">
     <div class="modalSearch__wrapper">
       <h2>Suggestions:</h2>
-      <div class="suggestion" v-for="item in items">
-        <p>Bergen</p>
-      </div>      
+      <router-link :to="{name:'accomodation', params: {id: item.id}}" v-for="item in items" v-bind:key="item.id">
+        <div class="suggestion">
+        <p>{{item.establishmentName}}</p>
+        </div>
+      </router-link>
+      <div class="suggestion" v-if="!nomatch">
+        <p>No Results for: {{input}}</p>
+      </div>   
     </div>
   </div>
 </template>
@@ -13,11 +18,14 @@
 export default {
   name: 'ModalSearch',
   props: {
-    
+    items: Array,
+    input: String,
+    nomatch:Boolean,
+
   },
   data(){
     return{
-      items: 4,
+      
     }
   }
 }
