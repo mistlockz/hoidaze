@@ -41,6 +41,7 @@
     <ModalBooking
     @click="toggleBooking"
     v-if="showBooking"
+    v-bind:place="place.establishmentName"
     />
     <ModalContact
       v-if="showContact"

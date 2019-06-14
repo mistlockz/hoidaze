@@ -4,7 +4,7 @@
       <h2>Suggestions:</h2>
       <router-link :to="{name:'accomodation', params: {id: item.id}}" v-for="item in items" v-bind:key="item.id">
         <div class="suggestion">
-        <p>{{item.establishmentName}}</p>
+        <p class="">{{item.establishmentName}}</p>
         </div>
       </router-link>
       <div class="suggestion" v-if="!nomatch">
@@ -44,6 +44,13 @@ export default {
     background-color: $red;
     color:white;
     padding-bottom: 10px;
+    & a{
+      color:white;
+      :hover{
+        color:$ui-yellow;
+      }
+    }
+
     & h2{
       margin-left: 15px;
       padding-bottom: 20px;
@@ -51,12 +58,16 @@ export default {
     }
     & .suggestion{
       margin: 0 auto;
+      color:white;
+
       width: 90%;      
       border-bottom: 1px solid white;
       padding:20px;
       @extend .fontsize-m;
+      
     }
   }
 }
+
 
 </style>
