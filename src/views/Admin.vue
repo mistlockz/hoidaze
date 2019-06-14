@@ -5,11 +5,11 @@
       <div class="admin__wrapper">        
         <form @submit.prevent>
           <h2>Administrator Login</h2>
-          <span>Username</span>
-          <input type="text" v-model="username">
+          <span>Username:</span>
+          <input name="username" type="text" v-model="username" @keydown="resetError">
           <span>Password:</span>
-          <input type="password" v-model="password">
-          <span>Invalid login-information</span>
+          <input name="password" type="password" v-model="password" @keydown="resetError">
+          <span class="errorMsg" v-if="loginError">Invalid login-information</span>
           <button type="submit" @click="login">Login</button>
         </form>
       </div>
@@ -29,6 +29,7 @@ export default {
     return {
       username:"",
       password:"",
+      loginError:false,
     }
   },
   created(){
@@ -44,7 +45,11 @@ export default {
       }else{
         this.username=""
         this.password=""
+        this.loginError=true;
       }
+    },
+    resetError(){
+      this.loginError=false;
     },
     generateSession(){
       return Math.floor((Math.random() * 10000) + 1);
@@ -90,6 +95,11 @@ form{
 
   & span{
     margin: 5px 0px 5px 0px;
+  }
+  & .errorMsg{
+    color:$ui-red;
+    @extend .fontweight-m;
+    @extend .fontsize-m;
   }
   & input{
     @extend .fontsize-m;

@@ -3,7 +3,7 @@
     <AdminHeader @click="logout"/>
     <AdminNav/>
     <AdminMessage
-      v-for="message in messages"
+      v-for="message in messages.slice().reverse()"
       v-bind:key="message.id"
       v-bind:message="message"
     />
@@ -48,8 +48,7 @@ export default {
       .then(function(response) {        
         return response.json();
       })
-      .then(function(myJson) {
-        console.table(myJson)
+      .then(function(myJson) {        
         app.messages = myJson;        
       });
     },
@@ -60,6 +59,6 @@ export default {
 @import '@/styles/main.scss';
 .messages{
   background-color: $grey;
-  height: 100vh;
+  height: 100%;
 }
 </style>

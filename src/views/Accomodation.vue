@@ -11,29 +11,28 @@
     </div>
     <div class="accomodation__table">
       <table>
-      <tr>
-        <td class="table__key">Price:</td>
-        <td class="table__value" ><strong>{{place.price}} £</strong></td>
-      </tr>
-      <tr>
-        <td class="table__key">Max guests:</td>
-        <td class="table__value"><strong>{{place.maxGuests}}</strong></td>
-      </tr>
-      <tr>
-        <td class="table__key">Self Catering:</td>
-        <td class="table__value" v-if="place.selfCatering"><strong>Yes</strong></td>
-        <td class="table__value" v-else><strong>No</strong></td>
-      </tr>
-      <tr>
-        <td class="table__key">Email:</td>
-        <td class="table__value"><strong>{{place.establishmentEmail}}</strong></td>
-      </tr>
-    </table>
+        <tr>
+          <td class="table__key">Price:</td>
+          <td class="table__value" ><strong>{{place.price}} $</strong></td>
+        </tr>
+        <tr>
+          <td class="table__key">Max guests:</td>
+          <td class="table__value"><strong>{{place.maxGuests}}</strong></td>
+        </tr>
+        <tr>
+          <td class="table__key">Self Catering:</td>
+          <td class="table__value" v-if="place.selfCatering"><strong>Yes</strong></td>
+          <td class="table__value" v-else><strong>No</strong></td>
+        </tr>
+        <tr>
+          <td class="table__key">Email:</td>
+          <td class="table__value"><strong>{{place.establishmentEmail}}</strong></td>
+        </tr>
+      </table>
     <div class="accomodation__button">
         <button @click="toggleBooking">Book Now</button>
-    </div>
-    
-    </div>
+    </div>    
+  </div>
 
     
     <FooterContact
@@ -51,22 +50,19 @@
 </template>
 
 <script>
-import BrowseMap from '@/components/BrowseMap.vue'
 import FooterContact from '@/components/FooterContact.vue'
 import ModalContact from '@/components/ModalContact.vue'
 import ModalBooking from '@/components/ModalBooking.vue'
 
-// New IMg https://images.unsplash.com/photo-1501117716987-c8c394bb29df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80
-// long img https://images.unsplash.com/photo-1548873902-8b69fb85030a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80
-
 export default {
   name: 'new',
-  components: {
-    BrowseMap,
+
+  components: {    
     FooterContact,
     ModalContact,
     ModalBooking
   },
+
   data(){
     return{      
       showContact: false,
@@ -76,12 +72,12 @@ export default {
       place: Object,
     }
   },
+
   created(){
     this.placeId = this.$route.params.id;
     this.getEstablishment();
-
-
   },
+
   methods:{
     toggleContact(){          
       this.showContact = !this.showContact;
@@ -99,10 +95,8 @@ export default {
         return response.json();
       })
       .then(function(myJson) {
-        app.rawAccomodation = myJson;
-        //console.log(app.rawAccomodation)
-        app.rawAccomodation.forEach(app.matchPlace)
-        
+        app.rawAccomodation = myJson;        
+        app.rawAccomodation.forEach(app.matchPlace)        
       });
     },
     matchPlace(obj){
@@ -123,9 +117,6 @@ export default {
     }
   }}
 </script>
-
-
-
 
 
 <style lang="scss" scoped>

@@ -49,7 +49,7 @@ export default {
         return response.json();
       })
       .then(function(myJson) {
-        console.table(myJson)
+        
         app.orders = myJson;        
       });
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="accomodationCard">
     <div class="cardImg">
-      <img src="@/assets/logo.png">
+      <img v-bind:src="place.imageUrl">
     </div>
     <div class="cardInfo">
       <div class="cardInfo__top">

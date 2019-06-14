@@ -21,7 +21,7 @@ export default {
   },
   props: {
     accomodations: Array,
-    filterMatch: true,
+    filterMatch: Boolean,
   }
   
 }

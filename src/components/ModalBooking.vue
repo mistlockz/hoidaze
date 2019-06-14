@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import newVue from './new.vue';
+
 export default {
   name: 'ModalBooking',
   props: {
@@ -151,7 +151,7 @@ export default {
     },
     prevMonth(){
       if(this.year == this.todayYear && this.month == this.todayMonth){
-        
+        return;
       }else{
         this.month--;
       if(this.month == -1){
@@ -201,7 +201,7 @@ export default {
       if(date.length == 1){
         date = 0 + date;
       }      
-      var fulldate = year + "-" + month + "-" + date;      ;
+      var fulldate = year + "-" + month + "-" + date;
       if(this.checkinDate == ""){
         this.firstDate = year+month+date;
         this.statusText = "Please select check-out date:";

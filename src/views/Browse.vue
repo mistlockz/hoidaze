@@ -127,7 +127,7 @@ export default {
       else{
         this.filters.search = input;
         this.showSuggestion = true;
-        //console.log(app.filters)
+        
         app.searchAccomodations = app.rawAccomodation.filter(app.setSearchFilter)
         if(app.searchAccomodations.length==0){
           app.searchMatch = false;
@@ -149,18 +149,7 @@ export default {
         app.filteredAccomodation = app.rawAccomodation;
         
       });
-    },
-    getPhp(){
-      const corsfix = 'https://cors-anywhere.herokuapp.com/'
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText);
-      }
-      };
-      xhttp.open("GET", corsfix + "http://www.wallemdesign.com/test.php", true);
-      xhttp.send();
-    },
+    },    
     fixCoordinates(obj){      
       obj.googleLat = parseFloat(obj.googleLat)
       obj.googleLong = parseFloat(obj.googleLong)      

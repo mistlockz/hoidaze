@@ -5,19 +5,42 @@
         <h3>Contact us</h3>
         <button @click="emitClose">X</button>
       </div>
-      <form @submit.prevent="submitContact">
-      <span>Name</span>
-      <input name="name">
-      <span>E-mail</span>
-      <input name="name">
-      <span>Your Message</span>
-      <textarea name="name"></textarea>
-      <button type="submit">Send</button>
-    </form>
-    </div>
-    
+      <div class="modalContact__success" v-if="formSent">
+        <h2>Success!</h2>
+        <p>Form was submitted successfully and we will contact you as soon as possible.</p>
+      </div>
       
-    
+      <form @submit.prevent="" v-else>
+      <span>
+        Full Name:     
+        <span class="errorMsg" v-if="errorName">Invalid Fullname</span>
+      </span>
+      <input name="name" 
+        v-model="name" 
+        v-on:blur="validateName"
+        v-bind:class="{ error: errorName }"
+        >
+      <span>
+        E-mail:
+        <span class="errorMsg" v-if="errorEmail">Invalid E-mail format</span>
+      </span>
+      <input name="email"
+        v-model="email" 
+        v-on:blur="validateEmail"
+        v-bind:class="{ error: errorEmail }"
+      >
+      <span>
+        Your Message:
+        <span class="errorMsg" v-if="errorMsg">This field cant be blank</span>
+      </span>
+      <textarea name="message" placeholder="What can we help you with?"
+        v-model="msg" 
+        v-on:blur="validateMsg" 
+        v-bind:class="{ error: errorMsg }">
+      </textarea>
+      <button type="submit" @click="validateForm">Send</button>
+    </form>
+    </div>   
    
   </div>
 </template>
@@ -28,12 +51,82 @@ export default {
   props: {
     
   },
-  methods:{
-    submitContact(){
-      alert("submiting")
-    },
-    emitClose(){
+  data(){
+    return{
+      name:"",
+      email:"",
+      msg:"",
       
+      validName:false,
+      validEmail:false,
+      validMsg:false,
+      
+      errorName:false,
+      errorEmail:false,
+      errorMsg:false,
+
+      formSent:false,
+    }
+  },
+  methods:{
+    validateName(){
+      var validFullname = /(\w.+\s).+/;
+      if(validFullname.test(this.name) == false){
+        this.errorName = true;
+        this.validName = false;
+      }else{
+        this.validName = true;
+        this.errorName = false;
+      }
+    },
+    validateEmail(){
+      var validEmailPattern = /^\w.+@\w+\.\w+$/;
+      if(validEmailPattern.test(this.email) == false){
+        this.validEmail = false;
+        this.errorEmail = true;
+      }else{
+        this.validEmail = true;
+        this.errorEmail = false;
+      }
+      
+    },
+    validateMsg(){
+      if(this.msg == ""){
+        this.errorMsg = true;
+        this.validMsg = false;
+      }else{
+        this.errorMsg = false;
+        this.validMsg = true;
+      }
+    },
+    validateForm(){
+      this.validateName();
+      this.validateEmail();
+      this.validateMsg();
+      if(this.validName == true && this.validEmail == true && this.validMsg == true){
+        this.sendForm();
+      }
+    },
+    sendForm(){
+      const app = this;
+      var name = encodeURI(app.name);
+      var email = encodeURI(app.email);
+      var msg = encodeURI(app.msg);
+      var encodedFormData = "clientName="+name+"&email="+email+"&message="+msg;
+      console.log(name +" "+ email + " "+ msg)
+      const corsfix = 'https://cors-anywhere.herokuapp.com/';
+
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          app.formSent = true;
+        }
+      };
+      xhttp.open("POST", corsfix + "http://www.wallemdesign.com/server/contact-success.php", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+      xhttp.send(encodedFormData);
+    },
+    emitClose(){      
       this.$emit('click');
     }
   }
@@ -74,6 +167,12 @@ export default {
       }
     }    
   }
+  &__success{    
+    width:80%;
+    margin:0 auto;
+    margin-top:30px;
+    color: white;
+  }
 }
 form{
   width:80%;
@@ -100,7 +199,14 @@ form{
     font-size: 16pt;
     margin-bottom: 20px;
   }
-  
+  .errorMsg{
+    color: $ui-red;
+    @extend .fontweight-m;
+    
+  }
+  .error{
+    border: solid $ui-red 2px;
+  }
   & button{
     background-color: $ui-green;
     @extend .fontsize-s;

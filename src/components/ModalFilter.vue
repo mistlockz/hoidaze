@@ -7,9 +7,9 @@
       </div>
 
       <form @submit.prevent="">
-          <span>Guests: <strong>{{filter.guests}}</strong></span>
+          <span>Minimum Guests: <strong>{{filter.guests}}</strong></span>
           <input type="range" name="guests" min="1" max="25" class="slider" v-model="filter.guests" >
-          <span>Max Price: <strong>{{filter.price}}$</strong></span>
+          <span>Maximum Price: <strong>{{filter.price}}$</strong></span>
           <input type="range" name="maxprice" min="1"   max="400" class="slider" v-model="filter.price">
           
           <span>Self Catering:</span>
@@ -21,11 +21,6 @@
             <label for="Tree">Yes</label>
             <input type="radio" name="catering" value="true"  class="radio" v-model="filter.catering">
           </div>          
-          <h2>Sort by:</h2>
-          <span>Price Low - high:</span>
-          <input type="radio" name="sort" class="radio">
-          <span>Price high - low:</span>
-          <input type="radio" name="sort" class="radio">
           <button @click="emitFilter">Show Results</button>        
       </form>
     </div>    
@@ -52,7 +47,7 @@ export default {
       this.$emit('closeModal')
     },
     emitFilter(){ 
-      //console.log(this.filter.catering)    
+        
       this.$emit('emitFilter', this.filter)
     }
   }
@@ -98,6 +93,7 @@ form{
   & button{
     width:40%;
     margin: 0 auto;
+    margin-top:20px;
     margin-bottom: 20px;
   }
   & span{
