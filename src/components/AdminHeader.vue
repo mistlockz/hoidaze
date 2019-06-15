@@ -1,18 +1,23 @@
 <template>
-  <div class="adminHeader">
-    <div class="adminHeader__wrapper">
-      <img src="@/assets/logoedit.svg" class="logo">    
-      <h2>Welcome Username{{username}}</h2>
+  <div class="[ adminHeader ]">
+    <div class="[ adminHeader__wrapper ]">
+      <img src="@/assets/logoedit.svg" class="[ logo ]" alt="image of logo">    
+      <h2> Welcome {{user}} </h2>
     </div>  
-    <button @click="emitLogout">Log out</button>      
+    <button @click="emitLogout"> Log out </button>      
   </div>
 </template>
 
 <script>
 export default {
   name: 'AdminHeader',
-  props: {
-    username: String,
+  data(){
+    return{
+      user:String
+    }
+  },
+  created(){
+    this.user = localStorage.getItem('username')
   },
   methods:{
     emitLogout(){
