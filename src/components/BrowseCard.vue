@@ -17,7 +17,7 @@
             Max-guests: <br>
             <strong> {{place.maxGuests}} </strong> <br>
             Prices from: <br>
-            <strong> {{place.price}} £ </strong>          
+            <strong> {{place.price}} $ </strong>          
           </p>
         </div>
 

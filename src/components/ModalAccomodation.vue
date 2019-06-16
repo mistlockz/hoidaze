@@ -177,8 +177,8 @@ export default {
     },
 
     validateUrl(){
-       var validUrlPattern = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-      if(validUrlPattern.test(this.url) == false){
+      var validpttrn = /^(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;      
+      if(validpttrn.test(this.url) == false){
         this.validUrl = false;
         this.errorUrl = true;
       }else{
@@ -225,8 +225,7 @@ export default {
           app.loading = true;
           app.showForm = false;
         }
-        if (this.readyState == 4 && this.status == 200) {
-          console.log("Form Sent")
+        if (this.readyState == 4 && this.status == 200) {          
           app.loading = false;
           app.formSent = true;
         }
